@@ -1,0 +1,119 @@
+@(tasks: List[Task], taskForm: Form[Task])
+
+@import helper._
+
+@main("Lista de Tarefas") {            
+                           
+	@Collections.sort(tasks)
+    <font color="white">  
+    <center><h1>AGENDA DE TAREFAS: @tasks.size() TAREFA(S)</h1></center>
+    
+    <body bgcolor="blue">
+	<font color="white">
+    <div id="corpo" >   
+    <table class="tabela" style="float:left;margin-left:10px;">
+            <tr style="background-color: transparent;">
+                    <th style="border:none;font-size: 15px;"> 
+                            TAREFAS CADASTRADAS
+                    </th>
+            </tr>
+                   <tr style="background-color: #8B8B7A;">
+                       <th >TAREFA</td>
+                       <th >PRIORIDADE</td>
+                       <th >PROJETO</td>
+                       <th >DESCRIÇÃO</td>
+                       <th >AÇÕES</td>
+               </tr>
+        @for(task <- tasks) {
+                @if(task.tarefarealizada() == false) {
+            <tr>
+				    <td >@task.label</td></td>
+                    <td >@task.prioridade</td>
+                    <td >@task.projeto</td>
+                    <td >@task.registrar</td>
+                
+                <td >
+                @form(routes.Application.update(task.getId())) {
+                        <input type="submit" value="Concluida" class="done">
+                }
+                @form(routes.Application.deleteTask(task.getId())) {
+                    <input type="submit" value="Excluir" class="del">
+                }
+                </td>
+            </tr>
+            }
+        }
+    </table>
+
+    <table class="tabela" style="float:right;margin-right: 20px;">
+            <tr style="background-color: transparent;">
+                    <th style="border:none;font-size: 15px;"> 
+                            TAREFAS REALIZADAS
+                    </th> 
+            </tr>
+                   <tr style="background-color: #8B8B7A;">
+					   <th >TAREFA</td>
+                       <th >PRIORIDADE</td>
+                       <th >PROJETO</td>
+                       <th >DESCRIÇÃO</td>
+                       <th >AÇÕES</td>
+               </tr>
+        @for(task <- tasks) {
+                @if(task.tarefarealizada() == true) {
+            <tr>
+				    <td >@task.label</td>
+                    <td >@task.prioridade</td>
+                    <td >@task.projeto</td>
+                    <td >@task.registrar</td>
+                                        
+                <td >
+				@form(routes.Application.deleteTask(task.getId())) {
+                    <input type="submit" value="Deletar" class="del">
+                }
+                
+                </td>
+            </tr>
+            }
+        }
+    </table>
+    </div>
+
+    <div id="formulario">   
+    	<center>
+			<h2></h2>
+		</center>
+    	<STYLE> 
+		<!-- 
+		.test{position: absolute; top: 200px; left: 575px;} 
+		--> 
+		</STYLE>  
+		<BODY> 
+		<DIV class=test> 
+			<center>
+    		@form(routes.Application.newTask()) {
+                @inputText(taskForm("label"))
+        		@inputText(taskForm("registrar"), '_label->"Descrição") 
+        		@inputText(taskForm("prioridade"), '_label->"Prioridade")
+        		@inputText(taskForm("projeto"), '_label->"Projeto")
+
+        		<input type="submit" value="ADICIONAR" class="create">        
+    		}
+ 			</center>
+		</DIV> 
+		</BODY> 
+		
+		
+	</div>
+    <table border=0 bgcolor='red' style="float:right;margin-top: 420px">
+    <tr>
+	<center>
+    <td>"LABORATÓRIO 02 - SISTEMA DE INFORMAÇÃO I"</td>  
+    <center>
+    </tr>
+    </table>
+    <center>
+    
+
+	<center>	
+    
+}
